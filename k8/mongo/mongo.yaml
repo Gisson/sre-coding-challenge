@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      service: mongo
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        service: mongo
+  labels:
+    app: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - image: gcr.io/multivac-232319/mymongo:latest
+          name: mongo
+          env:
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo
+                  key: password
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: root 
+            - name: MONGO_INITDB_DATABASE
+              value: multivac
+          ports:
+            - containerPort: 27017 
+              name: mongo
+          volumeMounts:
+            - name: mongo-persistent-storage
+              mountPath: /var/lib/mongodb
+      volumes:
+        - name: mongo-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongo-volumeclaim
+
