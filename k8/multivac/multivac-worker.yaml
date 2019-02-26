@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multivac-worker
+  labels:
+    app: multivac-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multivac-worker
+  template:
+    metadata:
+      labels:
+        app: multivac-worker
+    spec:
+      containers:
+        - image: gcr.io/multivac-232319/multivac-worker:latest
+          name: multivac

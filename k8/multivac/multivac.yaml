@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multivac
+  labels:
+    app: multivac
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multivac
+  template:
+    metadata:
+      labels:
+        app: multivac
+    spec:
+      containers:
+        - image: gcr.io/multivac-232319/multivac:latest
+          name: multivac
+          ports:
+            - containerPort: 5000
+              name: multivac
