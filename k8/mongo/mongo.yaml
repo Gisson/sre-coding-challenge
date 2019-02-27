@@ -3,23 +3,6 @@ kind: Deployment
 metadata:
   name: mongo
 spec:
-  replicas: 10
-  selector:
-    matchLabels:
-      service: mongo
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-  minReadySeconds: 5
-  template:
-    metadata:
-      labels:
-        service: mongo
-  labels:
-    app: mongo
-spec:
   replicas: 1
   selector:
     matchLabels:
