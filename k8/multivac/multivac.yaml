@@ -5,7 +5,6 @@ metadata:
   labels:
     app: multivac
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: multivac
@@ -20,3 +19,7 @@ spec:
           ports:
             - containerPort: 5000
               name: multivac
+          readinessProbe:
+              httpGet:
+                  path: /
+                  port: 5000
