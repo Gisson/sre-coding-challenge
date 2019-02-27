@@ -19,3 +19,7 @@ spec:
           ports:
             - containerPort: 80
               name: nginx
+          readinessProbe:
+              httpGet:
+                  path: /
+                  port: 80
