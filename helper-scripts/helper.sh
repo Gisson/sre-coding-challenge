@@ -31,20 +31,18 @@ prepare (){
 		systemctl is-active --quiet docker && echo -n "Docker is running!" || echo -n "Starting docker..." && systemctl start docker
 		echo "Done"
 		echo -n "Checking kubectl..."
-		kubectl get pods  1>/dev/null || $(echo "Please initialize kubectl config" && exit -1)
+#		kubectl get pods  1>/dev/null || $(echo "Please initialize kubectl config" && exit -1)
 		echo "Done"
 		echo "Done checking dependencies!"
 		echo "Preparing environment"
-		[[ -f ${BASEPATH}/k8/nginx/docker/.htpasswd ]] || htpasswd -c ${BASEPATH}/k8/nginx/docker/.htpasswd ${USERNAME}
+		[[ -f ${BASEPATH}/k8/nginx/docker/.htpasswd ]] && echo "Using existing htpasswd" || htpasswd -c ${BASEPATH}/k8/nginx/docker/.htpasswd ${USERNAME}
 		[[ -f ${HTTPSKEYPATH} ]] || cp  ${HTTPSKEYPATH} ${BASEPATH}/k8/nginx/docker/cacert.key
 		[[ -f ${HTTPSCERTPATH} ]] || cp ${HTTPSCERTPATH} ${BASEPATH}/k8/nginx/docker/cacert.cert
-		echo "Insert password for mongodb:"
+		echo "Insert password for multivac user in mongodb:"
 		read -s
-		[[ -f ${BASEPATH}/MultiVAC/.env ]] || $(cat .env |  sed -e 's/{{ mongo_password }}/'$REPLY'/g' > ${BASEPATH}/MultiVAC/.env)
-		[[ -f ${BASEPATH}/k8/mongo/docker/mongo_create_user.js ]] || $(cat mongo_create_user.js |  sed -e 's/{{ mongo_password }}/'\"$REPLY\"'/g' > ${BASEPATH}/k8/mongo/docker/mongo_create_user.js)
-		echo "Insert root password for mongodb: "
-		read -s
-		[[ -f ${BASEPATH}/k8/mongo/mongo-secret.yaml ]] || $(cat mongo-secret.yaml |  sed -e 's/{{ mongo_root_password }}/'$(echo $REPLY | base64)'/g' > ${BASEPATH}/k8/mongo/mongo-secret.yaml)
+		cat .env |  sed -e 's/{{ mongo_password }}/'$REPLY'/g' > ${BASEPATH}/MultiVAC/.env
+		cat mongo_create_user.js |  sed -e 's/{{ mongo_password }}/'\"$REPLY\"'/g' > ${BASEPATH}/k8/mongo/docker/mongo_create_user.js
+		[[ -f ${BASEPATH}/k8/mongo/mongo-secret.yaml ]] && echo "Using existing mongo-secret" || $(echo "Insert root password for mongodb: " && read -s && cat mongo-secret.yaml |  sed -e 's/{{ mongo_root_password }}/'$(echo $REPLY | base64)'/g' > ${BASEPATH}/k8/mongo/mongo-secret.yaml)
 		pushd .
 #		cd ${BASEPATH}/k8/nginx/docker
 		docker build ${BASEPATH}/k8/nginx/docker -t ${PROJECTNAME}/nginx:latest
@@ -55,7 +53,7 @@ prepare (){
 		popd 
 		echo "Deploy now?(y/n) "
 		read $y
-		if $y;then
+		if [[ $y = "y" ]];then
 			docker push ${PROJECTNAME}/nginx:latest
 			docker push ${PROJECTNAME}/multivac:latest
 			docker push ${PROJECTNAME}/multivac-worker:latest
