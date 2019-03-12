@@ -87,17 +87,17 @@ The architecture is presented in a [HLD](docs/HLD.png) and will run on a kuberne
 
 
 This architecture is focused mainly on:
-	-	Scalability;
-	-	Security;
-	-	And most importantly to change as little of the program as possible.
+	*	Scalability;
+	*	Security;
+	*	And most importantly to change as little of the program as possible.
 
 
 ### Detailed planning
 The presented solution contains:
-	-	MongoDB as database tier;
-	-	Redis cluster job parallelization;
-	-	MultiVAC as a backend application;
-	-	Nginx http server as frontend for the services running on kubernetes.
+	*	MongoDB as database tier;
+	*	Redis cluster job parallelization;
+	*	MultiVAC as a backend application;
+	*	Nginx http server as frontend for the services running on kubernetes.
 
 
 
@@ -106,10 +106,10 @@ Also relieves the developers of duties such as integrating https and authenticat
 
 
 To put it simple, this solution makes it easier to:
-	-	Keep track of requests and logs them, even if the backend applications crash;
-	-	Apply security practises such as https and authentication without enforcing them on the backend applications;
-	-	Monitor or even prevent bursts of requests on the frontends without disrupting backend applications;
-	-	Scale the frontends fast since they are faster to spawn.
+	*	Keep track of requests and logs them, even if the backend applications crash;
+	*	Apply security practises such as https and authentication without enforcing them on the backend applications;
+	*	Monitor or even prevent bursts of requests on the frontends without disrupting backend applications;
+	*	Scale the frontends fast since they are faster to spawn.
 
 
 
@@ -117,8 +117,8 @@ To put it simple, this solution makes it easier to:
 
 In order to execute the solution, a cluster in Google Cloud Platform was created.
 The execution was divided into 3 parts:
-	-	A Basic solution in a "just works" fashion, running the MultiVAC exposed to the internet complying of the 2 main functions (get data and put data) as well as monitoring (through StackDriver) and logging (through GCP integrated logging);
-	-	A Hardened solution which included nginx reverse proxy as frontends as well as https and http basic authentication in some endpoints.
+	*	A Basic solution in a "just works" fashion, running the MultiVAC exposed to the internet complying of the 2 main functions (get data and put data) as well as monitoring (through StackDriver) and logging (through GCP integrated logging);
+	*	A Hardened solution which included nginx reverse proxy as frontends as well as https and http basic authentication in some endpoints.
 
 ### 2.1 Deployment
 In order to make it easier to deploy a [helper-script](helper-scripts/helper.sh) was created. This script makes it easier to deploy the cluster (but is not as near as resilient as it should be).
@@ -128,14 +128,14 @@ For CI/CD GitLab AutoDevOps was used.
 
 ### Technologies used
 List of  technologies used:
-	-	Nginx for frontend and proxy;
-	-	Redis cluster for parallel jobs;
-	-	MongoDB for NoSQL database;
-	-	Python (with flask);
-	-	Docker for containers;
-	-	Kubernetes for orchestration;
-	-	StackDriver for monitorization and alarms;
-	-	Google integrated logging for logging.
+	*	Nginx for frontend and proxy;
+	*	Redis cluster for parallel jobs;
+	*	MongoDB for NoSQL database;
+	*	Python (with flask);
+	*	Docker for containers;
+	*	Kubernetes for orchestration;
+	*	StackDriver for monitorization and alarms;
+	*	Google integrated logging for logging.
 
 ## Possible improvements
 *	Use of a CI/CD independent of the backing platform used, such as Jenkins;
