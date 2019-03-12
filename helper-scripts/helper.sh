@@ -41,7 +41,7 @@ prepare (){
 		echo "Insert password for mongodb:"
 		read -s
 		cat .env |  sed -e 's/{{ mongo_password }}/'$REPLY'/g' > ${BASEPATH}/MultiVAC/.env
-		cat mongo_create_user.js |  sed -e 's/{{ mongo_password }}/'\"$REPLY\"'/g' > ${BASEPATH}/docker/mongo/mongo_create_user.js
+		cat mongo_create_user.js |  sed -e 's/{{ mongo_password }}/'\"$REPLY\"'/g' > ${BASEPATH}/k8/mongo/docker/mongo_create_user.js
 		echo "Insert root password for mongodb: "
 		read -s
 		cat mongo-secret.yaml |  sed -e 's/{{ mongo_root_password }}/'$(echo $REPLY | base64)'/g' > ${BASEPATH}/k8/mongo/mongo-secret.yaml
@@ -50,7 +50,7 @@ prepare (){
 		docker build ${BASEPATH}/k8/nginx/docker -t ${PROJECTNAME}/nginx:latest
 		docker build ${BASEPATH}/MultiVAC/ -t ${PROJECTNAME}/multivac:latest 
 		docker build ${BASEPATH}/MultiVAC/ -f ${BASEPATH}/MultiVAC/Dockerfile-worker -t ${PROJECTNAME}/multivac-worker:latest
-		docker build ${BASEPATH}/docker/mongo -t ${PROJECTNAME}/mymongo:latest 
+		docker build ${BASEPATH}/k8/mongo/docker -t ${PROJECTNAME}/mymongo:latest 
 		cd ${BASEPATH}/MultiVAC
 		popd 
 		echo "Deploy now?(y/n) "
