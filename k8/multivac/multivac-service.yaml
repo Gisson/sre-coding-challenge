@@ -5,11 +5,9 @@ metadata:
     app: multivac
   name: multivac
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
-    - port: 80
-      targetPort: 5000
-      protocol: TCP 
+    - port: 5000
   selector:
     app: multivac
 
