@@ -87,6 +87,7 @@ The architecture is presented in a [HLD](docs/HLD.png) and will run on a kuberne
 
 
 This architecture is focused mainly on:
+
 	*	Scalability;
 	*	Security;
 	*	And most importantly to change as little of the program as possible.
@@ -94,6 +95,7 @@ This architecture is focused mainly on:
 
 ### Detailed planning
 The presented solution contains:
+
 	*	MongoDB as database tier;
 	*	Redis cluster job parallelization;
 	*	MultiVAC as a backend application;
@@ -106,6 +108,7 @@ Also relieves the developers of duties such as integrating https and authenticat
 
 
 To put it simple, this solution makes it easier to:
+
 	*	Keep track of requests and logs them, even if the backend applications crash;
 	*	Apply security practises such as https and authentication without enforcing them on the backend applications;
 	*	Monitor or even prevent bursts of requests on the frontends without disrupting backend applications;
@@ -117,6 +120,7 @@ To put it simple, this solution makes it easier to:
 
 In order to execute the solution, a cluster in Google Cloud Platform was created.
 The execution was divided into 3 parts:
+
 	*	A Basic solution in a "just works" fashion, running the MultiVAC exposed to the internet complying of the 2 main functions (get data and put data) as well as monitoring (through StackDriver) and logging (through GCP integrated logging);
 	*	A Hardened solution which included nginx reverse proxy as frontends as well as https and http basic authentication in some endpoints.
 
@@ -128,6 +132,7 @@ For CI/CD GitLab AutoDevOps was used.
 
 ### Technologies used
 List of  technologies used:
+
 	*	Nginx for frontend and proxy;
 	*	Redis cluster for parallel jobs;
 	*	MongoDB for NoSQL database;
