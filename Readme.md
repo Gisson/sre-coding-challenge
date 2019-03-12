@@ -143,7 +143,7 @@ List of  technologies used:
 * Google integrated logging for logging.
 
 ## Possible improvements
-* Use of a CI/CD independent of the backing platform used, such as Jenkins;
+* Use of a CI/CD independent of the backing platform used, such as [Jenkins](https://jenkins.io/);
 * Improve CI/CD pipeline;
 * Improve automation scripts using a technology such as [Helm](https://helm.sh/)
 
