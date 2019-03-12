@@ -37,6 +37,15 @@ def get_multivac():
         answer = db.entropy.find_one()['data']
         return answer
 
+@multivac_bp.route("/zzz", methods=['GET'])
+def zzz():
+
+    n_answer = db.zzz.find().count()
+    if n_answer == 0:
+        return "INSUFFICIENT DATA FOR MEANINGFUL ANSWER."
+    else:
+        answer = db.entropy.find_one()['data']
+        return answer
 
 @multivac_bp.route("/multivac/data", methods=['POST'])
 def post_multivac():
