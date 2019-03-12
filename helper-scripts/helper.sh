@@ -35,16 +35,16 @@ prepare (){
 		echo "Done"
 		echo "Done checking dependencies!"
 		echo "Preparing environment"
-		htpasswd -c ${BASEPATH}/k8/nginx/docker/.htpasswd ${USERNAME}
+		[[ -f ${BASEPATH}/k8/nginx/docker/.htpasswd ]] || htpasswd -c ${BASEPATH}/k8/nginx/docker/.htpasswd ${USERNAME}
 		[[ -f ${HTTPSKEYPATH} ]] || cp  ${HTTPSKEYPATH} ${BASEPATH}/k8/nginx/docker/cacert.key
 		[[ -f ${HTTPSCERTPATH} ]] || cp ${HTTPSCERTPATH} ${BASEPATH}/k8/nginx/docker/cacert.cert
 		echo "Insert password for mongodb:"
 		read -s
-		cat .env |  sed -e 's/{{ mongo_password }}/'$REPLY'/g' > ${BASEPATH}/MultiVAC/.env
-		cat mongo_create_user.js |  sed -e 's/{{ mongo_password }}/'\"$REPLY\"'/g' > ${BASEPATH}/k8/mongo/docker/mongo_create_user.js
+		[[ -f ${BASEPATH}/MultiVAC/.env ]] || $(cat .env |  sed -e 's/{{ mongo_password }}/'$REPLY'/g' > ${BASEPATH}/MultiVAC/.env)
+		[[ -f ${BASEPATH}/k8/mongo/docker/mongo_create_user.js ]] || $(cat mongo_create_user.js |  sed -e 's/{{ mongo_password }}/'\"$REPLY\"'/g' > ${BASEPATH}/k8/mongo/docker/mongo_create_user.js)
 		echo "Insert root password for mongodb: "
 		read -s
-		cat mongo-secret.yaml |  sed -e 's/{{ mongo_root_password }}/'$(echo $REPLY | base64)'/g' > ${BASEPATH}/k8/mongo/mongo-secret.yaml
+		[[ -f ${BASEPATH}/k8/mongo/mongo-secret.yaml ]] || $(cat mongo-secret.yaml |  sed -e 's/{{ mongo_root_password }}/'$(echo $REPLY | base64)'/g' > ${BASEPATH}/k8/mongo/mongo-secret.yaml)
 		pushd .
 #		cd ${BASEPATH}/k8/nginx/docker
 		docker build ${BASEPATH}/k8/nginx/docker -t ${PROJECTNAME}/nginx:latest
