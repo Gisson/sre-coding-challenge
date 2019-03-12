@@ -1,0 +1,6 @@
+MultiVAC/.env
+k8/mongo/docker/mongo_create_user.js
+k8/mongo/mongo-secret.yaml
+k8/nginx/docker/.htpasswd
+k8/nginx/docker/cacert.cert
+k8/nginx/docker/cacert.key
